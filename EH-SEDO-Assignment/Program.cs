@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using EH_SEDO_Assignment.Data;
 using EH_SEDO_Assignment.Services;
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("EH_SEDO_AssignmentContext") ?? throw new InvalidOperationException("Connection string 'EH_SEDO_AssignmentContext' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
