@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using EH_SEDO_Assignment.Data;
 using EH_SEDO_Assignment.Services;
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("EH_SEDO_AssignmentContext") ?? throw new InvalidOperationException("Connection string 'EH_SEDO_AssignmentContext' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -24,9 +23,6 @@ else
 
 //set databse context
 builder.Services.AddDbContext<EH_SEDO_AssignmentContext>(options => options.UseAzureSql(connection));
-
-//add identity services, don't require account verification
-//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<EH_SEDO_AssignmentContext>();
 
 //identity service configuration
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -64,6 +60,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
+//add database repository service
+builder.Services.AddScoped<IDatabaseRepository, DatabaseRepository>();
+
 var app = builder.Build();
 await SeedService.SeedDatabase(app.Services);
 
@@ -87,6 +86,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-//app.MapRazorPages();
 
 app.Run();

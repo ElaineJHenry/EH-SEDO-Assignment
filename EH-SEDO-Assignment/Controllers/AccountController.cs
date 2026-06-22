@@ -38,7 +38,7 @@ namespace EH_SEDO_Assignment.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure:true);
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
 
                 if (result.Succeeded)
                 {
@@ -76,14 +76,14 @@ namespace EH_SEDO_Assignment.Controllers
 
                 //Create the user and assign the account the 'User' role, then redirect to the log in page
                 var result = await userManager.CreateAsync(user, model.Password);
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, "User");
 
-                    return RedirectToAction("Login", "Account", new {accountCreated = "Y"});
+                    return RedirectToAction("Login", "Account", new { accountCreated = "Y" });
                 }
-                
-                foreach(var error in result.Errors)
+
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
@@ -95,7 +95,7 @@ namespace EH_SEDO_Assignment.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Admin, User")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> ChangePassword()
         {
             //Gets the User ID of the User attempting to change password
@@ -110,13 +110,13 @@ namespace EH_SEDO_Assignment.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model) 
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = await userManager.FindByIdAsync(model.UserId);
 
-                if(user == null) 
+                if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "No user with that user id was found");
                     return View(model);
@@ -150,5 +150,12 @@ namespace EH_SEDO_Assignment.Controllers
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpGet]
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
+
     }
 }

@@ -1,0 +1,27 @@
+﻿@model EH_SEDO_Assignment.ViewModels.Users.UserListViewModel;
+
+<h1>User List</h1>
+<hr />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th># of Assigned Assets</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var user in Model.UserList)
+            {
+                <tr>
+                    <td><a class="btn btn-primary btn-sm" asp-controller="Users" asp-action="UserAssets" asp-route-id="@user.UserId">View Details</a></td>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.AssignedAssetCount</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
