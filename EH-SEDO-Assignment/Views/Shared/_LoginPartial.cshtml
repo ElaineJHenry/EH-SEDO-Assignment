@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using EH_SEDO_Assignment.Data;
+@inject SignInManager<ApplicationUser> signInManager;
+
+<ul class="navbar-nav ms-auto align-items-center">
+    @if (signInManager.IsSignedIn(User))
+    {
+        <li class="nav-item me-3">
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="ChangePassword">
+                Change Password
+            </a>
+        </li>
+        <li class="nav-item">
+            <form asp asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn nav-link text-dark p-0">Log Out</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark me-3" asp-controller="Account" asp-action="Login">
+                Log In
+            </a>
+        </li>
+        <li>
+            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">
+                Register
+            </a>
+        </li>
+    }
+</ul>

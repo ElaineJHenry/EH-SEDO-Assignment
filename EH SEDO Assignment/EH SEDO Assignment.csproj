@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>EH_SEDO_Assignment</RootNamespace>
+    <UserSecretsId>23699a5e-f040-472e-b576-7663e135c23e</UserSecretsId>
   </PropertyGroup>
 
 </Project>
