@@ -29,6 +29,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="UserAssets">My Assets</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Assets" asp-action="AssetList">All Assets</a>
+                            </li>
                         }
                         @if (User.IsInRole("Admin"))
                         {

@@ -1,0 +1,85 @@
+﻿@model EH_SEDO_Assignment.ViewModels.Assets.AssetDetailViewModel;
+
+@{
+    ViewData["Title"] = "Asset Details";
+}
+
+@if (Model.ShowAlert)
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="alert alert-success alert-dismissible col-6">
+                <p class="text-center">@Model.AlertMessage</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
+
+<h1>Asset Details for @Model.Name</h1>
+<hr />
+<div class="clearfix mb-3">
+    <div class="row">
+        @if (User.IsInRole("Admin"))
+        {
+            <button type="submit" class="btn btn-sm btn-primary col-1" form="AssetDetailForm">Save</button>
+        }
+        @if (Model.CanCheckInAsset)
+        {
+            <form aasp-controller="Assets" asp-action="CheckInAsset" method="post" class="col-2">
+                @Html.AntiForgeryToken()
+                <input name="assignmentId" value="@Model.AssignmentId" hidden />
+                <button type="submit" class="btn btn-sm btn-primary">Check In Asset</button>
+            </form>
+        }
+        @if (Model.Status == "On Shelf")
+        {
+            <form asp-controller="Assets" asp-action="CheckOutAsset" method="post" class="col-2">
+                @Html.AntiForgeryToken()
+                <input name="assetId" value="@Model.AssetId" hidden />
+                <button type="submit" class="btn btn-sm btn-primary">Check Out Asset</button>
+            </form>
+        }
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        @if (User.IsInRole("Admin"))
+        {
+            <partial name="_EditAssetPartial" model="@Model"/>
+        }
+        else
+        {
+            <partial name="_ReadOnlyAssetPartial" model="@Model" />
+        }
+    </div>
+    <div class="row">
+        <h2>Asset Assignment History</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Check Out Date</th>
+                    <th>Check In Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var assignment in Model.AssignmentHistory)
+                    {
+                        <tr>
+                            <td>@assignment.Name</td>
+                            <td>@assignment.CheckOutDate.ToString("dd/MM/yyyy")</td>
+                            <td>@assignment.CheckInDate?.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

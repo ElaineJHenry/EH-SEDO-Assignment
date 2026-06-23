@@ -1,0 +1,49 @@
+﻿@model EH_SEDO_Assignment.ViewModels.Assets.AssetDetailViewModel;
+
+<form id="AssetDetailForm" asp-action="AssetDetails" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-lg-6">
+        <input asp-for="AssetId" hidden />
+        <input asp-for="AssignmentId" hidden />
+        <span asp-validation-for="Name" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <label asp-for="Name" class="input-group-text col-4"></label>
+            <input asp-for="Name" class="form-control col-8" />
+        </div>
+
+        <span asp-validation-for="Type" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <label asp-for="Type" class="input-group-text col-4"></label>
+            <select asp-for="Type" asp-items="@ViewBag.AssetTypeList" class="form-select col-8"></select>
+        </div>
+
+        <span asp-validation-for="Description" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <label asp-for="Description" class="input-group-text col-4"></label>
+            <textarea asp-for="Description" class="form-control col-8" rows="5" ></textarea>
+        </div>
+
+        <span asp-validation-for="AssetValue" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <label asp-for="AssetValue" class="input-group-text col-4"></label>
+            <input type="number" asp-for="AssetValue" class="form-control col-8" min="0" step="0.01" />
+        </div>
+
+        <span asp-validation-for="AcquisitionDate" class="text-danger"></span>
+        <div class="input-group mb-3">
+            <label asp-for="AcquisitionDate" class="input-group-text col-4"></label>
+            <input type="date" asp-for="AcquisitionDate" class="form-control col-8" />
+        </div>
+
+        <div class="input-group mb-3">
+            <label asp-for="Status" class="input-group-text col-4"></label>
+            <input asp-for="Status" class="form-control col-8" readonly/>
+        </div>
+
+        <div class="form-check form-switch mb-3">
+            <label asp-for="InUse" class="form-input"></label>
+            <input type="checkbox" asp-for="InUse" class="form-check-input" role="switch"/>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,33 @@
+﻿@model EH_SEDO_Assignment.ViewModels.Assets.AssetDetailViewModel;
+
+<div class="col-lg-6">
+    <div class="input-group mb-3">
+        <label asp-for="Name" class="input-group-text col-4"></label>
+        <input asp-for="Name" class="form-control col-8" readonly/>
+    </div>
+
+    <div class="input-group mb-3">
+        <label asp-for="Type" class="input-group-text col-4"></label>
+        <input asp-for="Type" class="form-control col-8" readonly/>
+    </div>
+
+    <div class="input-group mb-3">
+        <label asp-for="Description" class="input-group-text col-4"></label>
+        <textarea asp-for="Description" class="form-control col-8" rows="5" readonly></textarea>
+    </div>
+
+    <div class="input-group mb-3">
+        <label asp-for="AssetValue" class="input-group-text col-4"></label>
+        <input asp-for="AssetValue" class="form-control col-8" readonly/>
+    </div>
+
+    <div class="input-group mb-3">
+        <label asp-for="AcquisitionDate" class="input-group-text col-4"></label>
+        <input asp-for="AcquisitionDate" class="form-control col-8" readonly/>
+    </div>
+
+    <div class="input-group mb-3">
+        <label asp-for="Status" class="input-group-text col-4"></label>
+        <input asp-for="Status" class="form-control col-8" readonly />
+    </div>
+</div>

@@ -4,6 +4,18 @@
     ViewData["Title"] = "User Assets";
 }
 
+@if (Model.ShowAlert)
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="alert alert-success alert-dismissible col-6">
+                <p class="text-center">@Model.AlertMessage</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
+
 <h1>Assets Assigned to @Model.Name</h1>
 <hr />
 <table class="table table-hover">
@@ -23,11 +35,11 @@
                     <td><a class="btn btn-primary btn-sm" asp-controller="Assets" asp-action="AssetDetails" asp-route-id="@asset.AssetId">View Details</a></td>
                     <td>@asset.AssetName</td>
                     <td>@asset.AssetType</td>
-                    <td>@asset.CheckOutDate</td>
+                    <td>@asset.CheckOutDate.ToString("dd/MM/yyyy")</td>
                     <td>
-                        <form asp asp-controller="Users" asp-action="CheckInAsset" method="post" class="d-inline">
+                        <form asp-controller="Users" asp-action="CheckInAsset" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
-                            <input name="assetId" value="@asset.AssetId" hidden />
+                            <input name="assignmentId" value="@asset.AssignmentId" hidden />
                             <button type="submit" class="btn btn-sm btn-primary">Check In Asset</button>
                         </form>
                     </td>

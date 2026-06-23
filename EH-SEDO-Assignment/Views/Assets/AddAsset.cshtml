@@ -1,0 +1,56 @@
+﻿@model EH_SEDO_Assignment.ViewModels.Assets.AddAssetViewModel;
+
+@{
+    ViewData["Title"] = "Add Asset";
+}
+
+<h1>Add Asset</h1>
+<hr />
+
+<div class="container">
+    <div class="row text-center mb-3">
+        <a asp-controller="Assets" asp-action="AssetList" class="btn btn-primary col-1">Back</a>
+    </div>
+    <div class="row">
+        <form asp-action="AddAsset" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-lg-6">
+                <span asp-validation-for="Name" class="text-danger"></span>
+                <div class="input-group mb-3">
+                    <label asp-for="Name" class="input-group-text col-4"></label>
+                    <input asp-for="Name" class="form-control col-8" />
+                </div>
+
+                <span asp-validation-for="Type" class="text-danger"></span>
+                <div class="input-group mb-3">
+                    <label asp-for="Type" class="input-group-text col-4"></label>
+                    <select asp-for="Type" asp-items="@ViewBag.AssetTypeList" class="form-select col-8" ></select>
+                </div>
+
+                <span asp-validation-for="Description" class="text-danger"></span>
+                <div class="input-group mb-3">
+                    <label asp-for="Description" class="input-group-text col-4"></label>
+                    <textarea asp-for="Description" class="form-control col-8" rows="5" ></textarea>
+                </div>
+
+                <span asp-validation-for="Value" class="text-danger"></span>
+                <div class="input-group mb-3">
+                    <label asp-for="Value" class="input-group-text col-4"></label>
+                    <input type="number" asp-for="Value" class="form-control col-8" min="0" step="0.01"/>
+                </div>
+
+                <span asp-validation-for="AcquisitionDate" class="text-danger"></span>
+                <div class="input-group mb-3">
+                    <label asp-for="AcquisitionDate" class="input-group-text col-4"></label>
+                    <input type="date" asp-for="AcquisitionDate" class="form-control col-8" />
+                </div>
+            </div>
+            <input type="submit" value="Submit" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

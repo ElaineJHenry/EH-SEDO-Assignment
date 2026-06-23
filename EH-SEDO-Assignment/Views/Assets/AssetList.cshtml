@@ -1,0 +1,51 @@
+﻿@model EH_SEDO_Assignment.ViewModels.Assets.AssetListViewModel
+
+@{
+    ViewData["Title"] = "Asset List";
+}
+
+<h1>Asset List</h1>
+<hr />
+<div class="container">
+    <div class="row">
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary col-1" asp-controller="Assets" asp-action="AddAsset">Add Asset</a>
+        }
+    </div>
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Asset Name</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Current Assignment</th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <th>In Use</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var asset in Model.AssetList)
+                    {
+                        <tr>
+                            <td><a class="btn btn-primary btn-sm" asp-controller="Assets" asp-action="AssetDetails" asp-route-id="@asset.AssetId">View Details</a></td>
+                            <td>@asset.AssetName</td>
+                            <td>@asset.AssetType</td>
+                            <td>@asset.AssetStatus</td>
+                            <td>@asset.AssetAssignment</td>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <td>@asset.InUseText</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -9,16 +9,10 @@ namespace EH_SEDO_Assignment.Controllers
 {
     public class UsersController : Controller
     {
-        private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IDatabaseRepository databaseRepository;
 
-        public UsersController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IDatabaseRepository databaseRepository)
+        public UsersController(IDatabaseRepository databaseRepository)
         {
-            this.signInManager = signInManager;
-            this.userManager = userManager;
-            this.roleManager = roleManager;
             this.databaseRepository = databaseRepository;
         }
 
@@ -34,7 +28,7 @@ namespace EH_SEDO_Assignment.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin, User")]
-        public async Task<IActionResult> UserAssets(string id = "")
+        public async Task<IActionResult> UserAssets(string id = "", bool showAlert = false, string alert = "")
         {
             UserAssetViewModel model = new UserAssetViewModel();
 
@@ -48,20 +42,51 @@ namespace EH_SEDO_Assignment.Controllers
                 return RedirectToAction("AccessDenied", "Account");
             }
 
+            HttpContext.Session.SetString("current_userid", id);
             var usermodel = await databaseRepository.GetUserInfo(id);
             model.Name = usermodel.FirstName + " " + usermodel.LastName;
             model.AssetAssignmentList = await databaseRepository.GetUserAssetAssignments(id);
+            model.ShowAlert = showAlert;
+
+            if (model.ShowAlert)
+            {
+                model.AlertMessage = GetAlertMessage(alert);
+            }
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CheckInAsset(int assetId)
+        public async Task<IActionResult> CheckInAsset(int assignmentId)
         {
-            Console.WriteLine(assetId);
+            string id = "";
+            if (User.IsInRole("Admin"))
+            {
+                id = HttpContext.Session.GetString("current_userid");
+            }
 
-            return RedirectToAction("UserAssets", "Users");
+            bool success = await databaseRepository.CheckInAsset(assignmentId);
+
+            if (success)
+            {
+                return RedirectToAction("UserAssets", "Users", new { id = id, showAlert = true, alert = "ChkIn" });
+            }
+
+            return RedirectToAction("UserAssets", "Users", new { id = id, showAlert = true, alert = "Fail" });
+        }
+
+        public string GetAlertMessage(string alert)
+        {
+            switch (alert)
+            {
+                case "ChkIn":
+                    return "Asset was sucessfully checked in.";
+                case "Fail":
+                    return "There was an issue when trying to check in the asset.";
+                default:
+                    return "Alert message displayed successfully.";
+            }
         }
     }
 }

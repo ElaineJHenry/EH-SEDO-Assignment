@@ -8,5 +8,6 @@
         public string AssetStatus { get; set; }
         public string AssetAssignment {  get; set; }
         public bool InUse { get; set; }
+        public string InUseText { get; set; }
     }
 }
