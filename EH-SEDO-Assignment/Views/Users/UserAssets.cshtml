@@ -1,5 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model EH_SEDO_Assignment.ViewModels.Users.UserAssetViewModel;
+
 @{
+    ViewData["Title"] = "User Assets";
 }
+
+<h1>Assets Assigned to @Model.Name</h1>
+<hr />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Asset Name</th>
+            <th>Asset Type</th>
+            <th>Check Out Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            foreach (var asset in Model.AssetAssignmentList)
+            {
+                <tr>
+                    <td><a class="btn btn-primary btn-sm" asp-controller="Assets" asp-action="AssetDetails" asp-route-id="@asset.AssetId">View Details</a></td>
+                    <td>@asset.AssetName</td>
+                    <td>@asset.AssetType</td>
+                    <td>@asset.CheckOutDate</td>
+                    <td>
+                        <form asp asp-controller="Users" asp-action="CheckInAsset" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input name="assetId" value="@asset.AssetId" hidden />
+                            <button type="submit" class="btn btn-sm btn-primary">Check In Asset</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

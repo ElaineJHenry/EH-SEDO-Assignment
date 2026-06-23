@@ -16,6 +16,41 @@ namespace EH_SEDO_Assignment.Data
             _logger = logger;
         }
 
+        #region Users ==========================
+
+        public async Task<UserInfoModel> GetUserInfo(string userid)
+        {
+            UserInfoModel model = new UserInfoModel();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand("GetUserInfo", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@UserID", userid));
+                    var reader = cmd.ExecuteReader();
+                    while (await reader.ReadAsync())
+                    {
+                        model.FirstName = reader.IsDBNull(0) ? "" : reader.GetString(0);
+                        model.LastName = reader.IsDBNull(1) ? "" : reader.GetString(1);
+                        model.Email = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                    }
+
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message, null);
+                    _logger.LogError(ex.StackTrace, null);
+                    connection.Close();
+                }
+
+            return model;
+        }
+        }
+
         public async Task<List<UserListInfo>> GetUserInfoList()
         {
             List<UserListInfo> list = new List<UserListInfo>();
@@ -53,5 +88,47 @@ namespace EH_SEDO_Assignment.Data
                 return list;
             }
         }
+
+        public async Task<List<UserAssignmentsListInfo>> GetUserAssetAssignments(string userid)
+        {
+            List<UserAssignmentsListInfo> list = new List<UserAssignmentsListInfo>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand("GetUserAssignedAssets", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@UserID", userid));
+                    var reader = cmd.ExecuteReader();
+                    while (await reader.ReadAsync())
+                    {
+                        var item = new UserAssignmentsListInfo()
+                        {
+                            AssignmentId = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
+                            AssetId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
+                            AssetName = reader.IsDBNull(2) ? "" : reader.GetString(2),
+                            AssetType = reader.IsDBNull(3) ? "" : reader.GetString(3),
+                            CheckOutDate = reader.IsDBNull(4) ? DateTime.Now : reader.GetDateTime(4)
+                        };
+
+                        list.Add(item);
+                    }
+
+                    connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message, null);
+                    _logger.LogError(ex.StackTrace, null);
+                    connection.Close();
+                }
+
+                return list;
+            }
+        }
+
+        #endregion
     }
 }

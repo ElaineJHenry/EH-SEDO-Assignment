@@ -125,7 +125,7 @@ namespace EH_SEDO_Assignment.Controllers
                 var result = await userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home", new {showAlert = true, alert = "CP"});
                 }
                 else
                 {

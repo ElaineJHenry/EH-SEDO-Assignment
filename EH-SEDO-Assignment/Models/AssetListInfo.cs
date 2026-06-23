@@ -1,11 +1,12 @@
 ﻿namespace EH_SEDO_Assignment.Models
 {
-    public class UserAssignmentsListInfo
+    public class AssetListInfo
     {
-        public int AssignmentId { get; set; }
         public int AssetId { get; set; }
         public string AssetName { get; set; }
         public string AssetType { get; set; }
-        public DateTime CheckOutDate { get; set; }
+        public string AssetStatus { get; set; }
+        public string AssetAssignment {  get; set; }
+        public bool InUse { get; set; }
     }
 }
