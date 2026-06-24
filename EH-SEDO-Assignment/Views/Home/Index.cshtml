@@ -1,4 +1,7 @@
-﻿@model EH_SEDO_Assignment.ViewModels.Home.HomeViewModel;
+﻿@using Microsoft.AspNetCore.Identity;
+@using EH_SEDO_Assignment.Data;
+@inject SignInManager<ApplicationUser> signInManager;
+@model EH_SEDO_Assignment.ViewModels.Home.HomeViewModel;
 
 @{
     ViewData["Title"] = "Home Page";
@@ -20,7 +23,7 @@
     <h1 class="display-4">Welcome @Model.Name</h1>
 </div>
 <hr />
-@if (User.IsInRole("Admin") || User.IsInRole("User"))
+@if (signInManager.IsSignedIn(User))
 {
     <div class="container">
         <div class="row">
