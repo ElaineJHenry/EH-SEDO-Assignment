@@ -70,6 +70,13 @@ namespace EH_SEDO_Assignment.Controllers
         {
             AssetDetailViewModel model = new AssetDetailViewModel();
             model = await databaseRepository.GetAssetInfo(id);
+
+            //Prevent regular user from accessing an asset that is not in use.
+            if(User.IsInRole("User") && !model.InUse)
+            {
+                return RedirectToAction("AccessDenied", "Account");
+            }
+
             model.AssignmentHistory = await databaseRepository.GetAssetAssignmentHistory(id);
             model.CanCheckInAsset = await databaseRepository.AllowUserCheckIn(id, User.FindFirstValue(ClaimTypes.NameIdentifier));
             model.ShowAlert  = showAlert;

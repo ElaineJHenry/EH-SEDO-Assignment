@@ -32,7 +32,7 @@
                 <button type="submit" class="btn btn-sm btn-primary">Check In Asset</button>
             </form>
         }
-        @if (Model.Status == "On Shelf")
+        @if (Model.Status == "On Shelf" && Model.InUse)
         {
             <form asp-controller="Assets" asp-action="CheckOutAsset" method="post" class="col-2">
                 @Html.AntiForgeryToken()

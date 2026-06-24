@@ -33,6 +33,7 @@ namespace EH_SEDO_Assignment.ViewModels.Assets
         public string Status { get; set; }
 
         [Required]
+        [Display(Name = "In Use")]
         public bool InUse {  get; set; }
 
         public int AssignmentId { get; set; }
