@@ -21,9 +21,9 @@
                     <th>Asset Name</th>
                     <th>Type</th>
                     <th>Status</th>
-                    <th>Current Assignment</th>
                     @if (User.IsInRole("Admin"))
                     {
+                        <th>Current Assignment</th>
                         <th>In Use</th>
                     }
                 </tr>
@@ -37,9 +37,9 @@
                             <td>@asset.AssetName</td>
                             <td>@asset.AssetType</td>
                             <td>@asset.AssetStatus</td>
-                            <td>@asset.AssetAssignment</td>
                             @if (User.IsInRole("Admin"))
                             {
+                                <td>@asset.AssetAssignment</td>
                                 <td>@asset.InUseText</td>
                             }
                         </tr>

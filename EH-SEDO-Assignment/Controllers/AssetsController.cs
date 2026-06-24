@@ -27,6 +27,7 @@ namespace EH_SEDO_Assignment.Controllers
             if (User.IsInRole("User"))
             {
                 model.AssetList = model.AssetList.Where(x => x.InUse == true).ToList();
+                model.AssetList = model.AssetList.Where(x => x.AssetStatus == "On Shelf").ToList();
             }
 
             return View(model);

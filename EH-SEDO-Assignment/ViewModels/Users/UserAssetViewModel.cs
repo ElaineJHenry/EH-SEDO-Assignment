@@ -6,6 +6,7 @@ namespace EH_SEDO_Assignment.ViewModels.Users
     {
         public string Name { get; set; }
         public List<UserAssignmentsListInfo> AssetAssignmentList { get; set; }
+        public bool CanAddAsset {  get; set; }
 
         public bool ShowAlert { get; set; }
         public string AlertMessage { get; set; }

@@ -18,6 +18,10 @@
 
 <h1>Assets Assigned to @Model.Name</h1>
 <hr />
+@if (Model.CanAddAsset)
+{
+    <a class="btn btn-primary col-1" asp-controller="Assets" asp-action="AssetList">Get Asset</a>
+}
 <table class="table table-hover">
     <thead>
         <tr>
@@ -29,8 +33,10 @@
     </thead>
     <tbody>
         @{
-            foreach (var asset in Model.AssetAssignmentList)
+            if(Model.AssetAssignmentList.Count() > 0)
             {
+                foreach (var asset in Model.AssetAssignmentList)
+                {
                 <tr>
                     <td><a class="btn btn-primary btn-sm" asp-controller="Assets" asp-action="AssetDetails" asp-route-id="@asset.AssetId">View Details</a></td>
                     <td>@asset.AssetName</td>
@@ -44,7 +50,15 @@
                         </form>
                     </td>
                 </tr>
+                }
             }
+            else
+            {
+                <tr>
+                <td colspan="5" style="font-weight: bold">No Assets Found</td>
+                </tr>
+            }
+            
         }
     </tbody>
 </table>

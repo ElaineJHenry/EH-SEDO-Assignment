@@ -31,11 +31,12 @@ namespace EH_SEDO_Assignment.Controllers
         public async Task<IActionResult> UserAssets(string id = "", bool showAlert = false, string alert = "")
         {
             UserAssetViewModel model = new UserAssetViewModel();
+            var currentUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             //Regular user can view their own assets, but will be redirected to the access denied page if trying to view somebody else
-            if(string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
             {
-                id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                id = currentUser;
             }
             else if (User.IsInRole("User"))
             {
@@ -47,6 +48,7 @@ namespace EH_SEDO_Assignment.Controllers
             model.Name = usermodel.FirstName + " " + usermodel.LastName;
             model.AssetAssignmentList = await databaseRepository.GetUserAssetAssignments(id);
             model.ShowAlert = showAlert;
+            model.CanAddAsset = id == currentUser;
 
             if (model.ShowAlert)
             {
