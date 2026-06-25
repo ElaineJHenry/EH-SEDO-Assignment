@@ -21,6 +21,7 @@ namespace EH_SEDO_Assignment.Data
 
         #region Users ==========================
 
+        //returns user info from the database using the supplied userid
         public async Task<UserInfoModel> GetUserInfo(string userid)
         {
             UserInfoModel model = new UserInfoModel();
@@ -54,6 +55,7 @@ namespace EH_SEDO_Assignment.Data
             return model;
         }
 
+        //returns a list of users and the number of assets they have from the database
         public async Task<List<UserListInfo>> GetUserInfoList()
         {
             List<UserListInfo> list = new List<UserListInfo>();
@@ -92,6 +94,7 @@ namespace EH_SEDO_Assignment.Data
             return list;
         }
 
+        //returns a list of assets assigned to the user with the supplied userid
         public async Task<List<UserAssignmentsListInfo>> GetUserAssetAssignments(string userid)
         {
             List<UserAssignmentsListInfo> list = new List<UserAssignmentsListInfo>();
@@ -136,6 +139,7 @@ namespace EH_SEDO_Assignment.Data
 
         #region Assets =========================
 
+        //returns a list of asset types that can be used in a select input
         public async Task<List<SelectListItem>> GetAssetTypes()
         {
             List<SelectListItem> list = new List<SelectListItem>();
@@ -148,6 +152,7 @@ namespace EH_SEDO_Assignment.Data
             return list;
         }
 
+        //Adds an asset to the database and returns the asset id that was generated
         public async Task<int> AddAsset(AddAssetViewModel model)
         {
             int assetId = 0;
@@ -183,6 +188,7 @@ namespace EH_SEDO_Assignment.Data
             return assetId;
         }
 
+        //returns asset details held against the supplied assetId
         public async Task<AssetDetailViewModel> GetAssetInfo(int assetId)
         {
             AssetDetailViewModel model = new AssetDetailViewModel();
@@ -223,6 +229,7 @@ namespace EH_SEDO_Assignment.Data
             return model;
         }
 
+        //returns a list containing the assignment history for the supplied assetId
         public async Task<List<AssetAssignmentHistoryModel>> GetAssetAssignmentHistory(int assetId)
         {
             List<AssetAssignmentHistoryModel> list = new List<AssetAssignmentHistoryModel>();
@@ -262,6 +269,8 @@ namespace EH_SEDO_Assignment.Data
             return list;
         }
 
+        //returns a boolean determining whether a user should be able to chjeck in a given asset
+        //gets the most recent assignment for an asset that doesn't have a check in date, checks to see whether that assignment is for the supplied user
         public async Task<bool> AllowUserCheckIn(int assetId, string userId)
         {
             bool result = false;
@@ -294,6 +303,7 @@ namespace EH_SEDO_Assignment.Data
             return result;
         }
 
+        //updates the asset on the database, returns a bool determining whether the action was successful
         public async Task<bool> UpdateAsset(AssetDetailViewModel model)
         {
             bool success = false;
@@ -329,6 +339,7 @@ namespace EH_SEDO_Assignment.Data
             return success;
         }
 
+        //returns a list of assets from the database
         public async Task<List<AssetListInfo>> GetAssetList()
         {
             List<AssetListInfo> list = new List<AssetListInfo>();
@@ -371,6 +382,7 @@ namespace EH_SEDO_Assignment.Data
             return list;
         }
 
+        //checks out an asset, creating a new assignment record on the database, returns a bool determining whether the action was successful
         public async Task<bool> CheckOutAsset(string userId, int assetId)
         {
             bool success = false;
@@ -401,6 +413,8 @@ namespace EH_SEDO_Assignment.Data
             return success;
         }
 
+
+        //checks in an asset, setting the check in date for the assignment and setting the asset status to on shelf, returns a bool determining whether the action was successful
         public async Task<bool> CheckInAsset(int assignmentId)
         {
             bool success = false;

@@ -66,12 +66,21 @@
             </thead>
             <tbody>
                 @{
-                    foreach (var assignment in Model.AssignmentHistory)
+                    if (Model.AssignmentHistory.Count() > 0)
+                    {
+                        foreach (var assignment in Model.AssignmentHistory)
+                        {
+                            <tr>
+                                <td>@assignment.Name</td>
+                                <td>@assignment.CheckOutDate.ToString("dd/MM/yyyy")</td>
+                                <td>@assignment.CheckInDate?.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>@assignment.Name</td>
-                            <td>@assignment.CheckOutDate.ToString("dd/MM/yyyy")</td>
-                            <td>@assignment.CheckInDate?.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center" colspan="5" style="font-weight: bold">No Asset History Found</td>
                         </tr>
                     }
                 }

@@ -24,8 +24,10 @@ namespace EH_SEDO_Assignment.Controllers
         [HttpGet]
         public IActionResult Login(string accountCreated = "")
         {
+            
             LoginViewModel model = new LoginViewModel
             {
+                //This causes an alert to be shown after being redirected to the log in page after registering
                 UserCreated = accountCreated == "Y" ? true : false
             };
 
@@ -38,8 +40,8 @@ namespace EH_SEDO_Assignment.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Attempts to log in with supplied credentials, if successful, the user is signed in and redirected to the home page
                 var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
-
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
@@ -83,6 +85,7 @@ namespace EH_SEDO_Assignment.Controllers
                     return RedirectToAction("Login", "Account", new { accountCreated = "Y" });
                 }
 
+                //If user creation fails, errors are added to the model state to be displayed to the user
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -114,14 +117,15 @@ namespace EH_SEDO_Assignment.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Gets the user with the supplied userId
                 var user = await userManager.FindByIdAsync(model.UserId);
-
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "No user with that user id was found");
                     return View(model);
                 }
 
+                //Updates the password for the user if the correct password has been supplied, then redirects to the home page with parameters to display an alert
                 var result = await userManager.ChangePasswordAsync(user, model.Password, model.NewPassword);
                 if (result.Succeeded)
                 {
@@ -129,6 +133,7 @@ namespace EH_SEDO_Assignment.Controllers
                 }
                 else
                 {
+                    //If password update fails, errors are added to the model state to be displayed to the user
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
@@ -147,6 +152,7 @@ namespace EH_SEDO_Assignment.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
+            //Signs the user out from the application, then redirects them to the home page.
             await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }

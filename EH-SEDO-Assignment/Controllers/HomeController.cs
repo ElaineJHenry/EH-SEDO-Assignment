@@ -23,16 +23,20 @@ namespace EH_SEDO_Assignment.Controllers
         {
             string name = "", alertMessage = "";
 
+            //If a user is signed in, get their name from the database
             if (signInManager.IsSignedIn(User))
             {
                 var usermodel = await databaseRepository.GetUserInfo(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 name = usermodel.FirstName;
             }
+
+            //If an alert will be shown, determine what message should be shown
             if (showAlert)
             {
                 alertMessage = GetAlertMessage(alert);
             }
 
+            //set the parameters if the view model
             HomeViewModel model = new HomeViewModel()
             {
                 Name = name,
@@ -49,6 +53,7 @@ namespace EH_SEDO_Assignment.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        //Determines which alert message should be shown based on a switch
         public string GetAlertMessage(string alert)
         {
             switch (alert)
